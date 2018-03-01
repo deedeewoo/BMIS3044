@@ -4,15 +4,7 @@ library("dagR")
 
 ## simulation 5 - DAG of heterogeneity Elwert & Winship paper (Figure 3)
 
-dag5<-dag.init(covs=c(1,1,1), arcs=c(1,0, 1,-1, 2,0, 3,2, 3,-1), symbols=c("D","x1","x2","U","Y"), cov.names = c("Confounder1","Confounder2","Confounder2 - Unobeserved"));
-dag5$x <- c(0.5, 0.5, 0, 0, 1.00)
-dag5$y <- c(0.50, 1, 0.5, 0.00, 0.50)
-dag.draw(dag5, numbering=TRUE);
 
-sim5 <- dag.sim(dag5, b=c(1,0.8,1.5,1.2,2), bxy = 0.5, mu=c(10,20,30,10,10), stdev=c(2,3,2,2,4), seed=1, n=10000);
-coef(lm(Y~D, data=sim4));
-coef(lm(Y~D+x1+x2, data=sim5));
-coef(lm(Y~D+x1+U, data=sim5));
 
 ## manual simulation 
 
@@ -37,4 +29,17 @@ df$c7 <- (0.6 + 0.8 * df$g) * df$a + (0.5 + 2 * df$g) * df$b_g + df$e2 # alpha, 
 results <- data.frame(matrix(nrow=7, ncol=2))
 reg0 <- lm(c0~a+b, data=df)
 results[1,] <- coef(reg0)[2:3]
-reg1 <- lm(c1~a+b, data=df)
+reg1 <- lm(c1~a+b_g, data=df)
+results[2,] <- coef(reg1)[2:3]
+reg2 <- lm(c2~a+b, data=df)
+results[3,] <- coef(reg2)[2:3]
+reg3 <- lm(c3~a+b, data=df)
+results[4,] <- coef(reg3)[2:3]
+reg4 <- lm(c4~a+b_g, data=df)
+results[5,] <- coef(reg4)[2:3]
+reg5 <- lm(c5~a+b_g, data=df)
+results[6,] <- coef(reg5)[2:3]
+reg6 <- lm(c6~a+b, data=df)
+results[7,] <- coef(reg6)[2:3]
+reg7 <- lm(c7~a+b_g, data=df)
+results[8,] <- coef(reg7)[2:3]
